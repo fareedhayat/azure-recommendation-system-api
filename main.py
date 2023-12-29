@@ -21,14 +21,14 @@ def set_globvar(setModel,setResults_df,setContent_based_recommendation_df,setCal
     call_data_df = setCall_data_df
     active_users_ids_df = setActive_users_ids_df
 
-# def set_weights(setRatingWeight, setCallWeight, setDurationWeight):
-#     global rating_weight
-#     global call_weight
-#     global duration_weight
+def set_weights(setRatingWeight, setCallWeight, setDurationWeight):
+    global rating_weight
+    global call_weight
+    global duration_weight
     
-#     rating_weight = setRatingWeight
-#     call_weight = setCallWeight
-#     duration_weight = setDurationWeight
+    rating_weight = setRatingWeight
+    call_weight = setCallWeight
+    duration_weight = setDurationWeight
 
 
 @app.get("/")
@@ -38,23 +38,23 @@ def read_root():
 
 @app.get("/id")
 def read_item(id: Union[str, None] = None):
-    global rating_weight
-    global call_weight
-    global duration_weight
+    # global rating_weight
+    # global call_weight
+    # global duration_weight
 
     categories = get_categories(id)
     if not categories:
         return {"No Categories Found"}
     
-    weights = get_weights()
+    # weights = get_weights()
 
-    for key, value in weights.items():
-        if key == 'RECOMMENDED_RATING_WEIGHT':
-             rating_weight = value
-        elif key == 'CALL_DURATION_WEIGHT':
-             duration_weight = value
-        elif key == 'CALL_TAKEN_WEIGHT':
-             call_weight = value
+    # for key, value in weights.items():
+    #     if key == 'RECOMMENDED_RATING_WEIGHT':
+    #          rating_weight = value
+    #     elif key == 'CALL_DURATION_WEIGHT':
+    #          duration_weight = value
+    #     elif key == 'CALL_TAKEN_WEIGHT':
+    #          call_weight = value
 
     query = {
     'user_id': id
@@ -145,18 +145,18 @@ def GetTrainedModel():
 
     return {"Variables Set Successfully"}
 
-# @app.get("/GetConfiguration")
-# def GetConfiguration():
-#     weights = get_weights()
+@app.get("/GetConfiguration")
+def GetConfiguration():
+    weights = get_weights()
     
-#     for key, value in weights.items():
-#         if key == 'RECOMMENDED_RATING_WEIGHT':
-#             rating_weight = value
-#         elif key == 'CALL_DURATION_WEIGHT':
-#             duration_weight = value
-#         elif key == 'CALL_TAKEN_WEIGHT':
-#             call_weight = value
+    for key, value in weights.items():
+        if key == 'RECOMMENDED_RATING_WEIGHT':
+            rating_weight = value
+        elif key == 'CALL_DURATION_WEIGHT':
+            duration_weight = value
+        elif key == 'CALL_TAKEN_WEIGHT':
+            call_weight = value
             
-#     set_weights(rating_weight, duration_weight, call_weight)
+    set_weights(rating_weight, duration_weight, call_weight)
 
-#     return f"Rating Weight = {rating_weight}, Duration Weight = {duration_weight} Call Weight = {call_weight}, Variables Set Successfully"
+    return f"Rating Weight = {rating_weight}, Duration Weight = {duration_weight} Call Weight = {call_weight}, Variables Set Successfully"
