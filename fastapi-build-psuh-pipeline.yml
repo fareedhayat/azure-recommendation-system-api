@@ -5,7 +5,6 @@ resources:
 - repo: self
 
 variables:
-  # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: 'a94a92d8-548d-47d2-9a89-0288d51c1ce3'
   imageRepository: 'fareedhayatazurerecommendationsystemapi'
   containerRegistry: 'owwllfastapicr.azurecr.io'
@@ -13,27 +12,38 @@ variables:
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
   tag: '$(Build.BuildId)'
 
-  # Agent VM image name
   vmImageName: 'ubuntu-latest'
 
 stages:
-# - stage: Build
-#   displayName: Build and push stage
-#   jobs: 
-#   - job: Build
-#     displayName: Build
-#     pool:
-#       vmImage: $(vmImageName)
-#     steps:
-#     - task: Docker@2
-#       displayName: Build and push an image to container registry
-#       inputs:
-#         command: buildAndPush
-#         repository: $(imageRepository)
-#         dockerfile: $(dockerfilePath)
-#         containerRegistry: $(dockerRegistryServiceConnection)
-#         tags: |
-#           $(tag)
+- stage: Infrastructure
+  displayName: Terraform working
+  jobs:
+  - job: Infrasturucture
+    displayName: Infrasturucture
+    steps:
+    - task: TerraformCLI@2
+      inputs:
+        command: 'apply'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/configurations/iaac'
+        allowTelemetryCollection: true
+        
+- stage: Build
+  displayName: Build and push stage
+  jobs: 
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: Docker@2
+      displayName: Build and push an image to container registry
+      inputs:
+        command: buildAndPush
+        repository: $(imageRepository)
+        dockerfile: $(dockerfilePath)
+        containerRegistry: $(dockerRegistryServiceConnection)
+        tags: |
+          $(tag)
 
 - stage: Deploy
   displayName: Deploy to Azure Container Instances
@@ -43,30 +53,11 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
-    # - task: AzureCLI@2
-    #   inputs:
-    #     azureSubscription: 'Visual Studio Enterprise Subscription – MPN(b0d41a48-8660-46c7-856d-1a9cf5f0ac07)'
-    #     scriptType: 'bash'
-    #     scriptLocation: 'inlineScript'
-    #     inlineScript: |
-    #       az --version
-
-    #       az account set --subscription b0d41a48-8660-46c7-856d-1a9cf5f0ac07
-
-    #       az acr login --name YourContainerRegistry 
-    #       az container create --resource-group owwll-recommendation-fastapi-ci-cd_dev --name $(containerInstanceName) --image $(containerRegistry)/$(imageRepository):$(tag) --dns-name-label owwll-ap-instance --ports 80
-    
-    # - task: AzureCLI@2
-    #   inputs:
-    #     azureSubscription: 'Visual Studio Enterprise Subscription – MPN(b0d41a48-8660-46c7-856d-1a9cf5f0ac07)'
-    #     scriptType: 'bash'
-    #     scriptLocation: 'inlineScript'
-    #     inlineScript: 'az acr login --name $(containerRegistry)'
     - task: AzureCLI@2
       inputs:
         azureSubscription: 'Visual Studio Enterprise Subscription – MPN(b0d41a48-8660-46c7-856d-1a9cf5f0ac07)'
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: |
-          az container create --resource-group owwll-recommendation-fastapi-ci-cd_dev --name $(containerInstanceName) --image $(containerRegistry)/$(imageRepository):36 --cpu 1 --memory 1 --registry-login-server $(containerRegistry) --registry-username owwllFastApiCR  --registry-password qpA3uft5fS6XwMr3yXipgVhZZ63F/tQEziLPGIGJq0+ACRBI/jvl --ip-address Public --dns-name-label owwll-ap-instance --ports 80
+          az container create --resource-group owwll-recommendation-fastapi-ci-cd_dev --name $(containerInstanceName) --image $(containerRegistry)/$(imageRepository):$(tag) --cpu 1 --memory 1 --registry-login-server $(containerRegistry) --registry-username owwllFastApiCR  --registry-password qpA3uft5fS6XwMr3yXipgVhZZ63F/tQEziLPGIGJq0+ACRBI/jvl --ip-address Public --dns-name-label owwll-ap-instance --ports 80
     
