@@ -15,28 +15,28 @@ variables:
   vmImageName: 'ubuntu-latest'
 
 stages:
-- stage: Infrastructure
-  displayName: Terraform working
-  jobs:
-  - job: Infrasturucture
-    displayName: Infrasturucture
-    steps:
-    - task: AzureCLI@2
-      inputs:
-        azureSubscription: 'Visual Studio Enterprise Subscription – MPN(b0d41a48-8660-46c7-856d-1a9cf5f0ac07)'
-        scriptType: 'bash'
-        scriptLocation: 'inlineScript'
-        inlineScript: 'az login'
-    - task: TerraformCLI@2
-      inputs:
-        command: 'init'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/configurations/iaac'
-        allowTelemetryCollection: true
-    - task: TerraformCLI@2
-      inputs:
-        command: 'apply'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/configurations/iaac'
-        allowTelemetryCollection: true
+# - stage: Infrastructure
+#   displayName: Terraform working
+#   jobs:
+#   - job: Infrasturucture
+#     displayName: Infrasturucture
+#     steps:
+#     - task: AzureCLI@2
+#       inputs:
+#         azureSubscription: 'Visual Studio Enterprise Subscription – MPN(b0d41a48-8660-46c7-856d-1a9cf5f0ac07)'
+#         scriptType: 'bash'
+#         scriptLocation: 'inlineScript'
+#         inlineScript: 'az login'
+#     - task: TerraformCLI@2
+#       inputs:
+#         command: 'init'
+#         workingDirectory: '$(System.DefaultWorkingDirectory)/configurations/iaac'
+#         allowTelemetryCollection: true
+#     - task: TerraformCLI@2
+#       inputs:
+#         command: 'apply'
+#         workingDirectory: '$(System.DefaultWorkingDirectory)/configurations/iaac'
+#         allowTelemetryCollection: true
         
 - stage: Build
   displayName: Build and push stage
