@@ -4,3 +4,9 @@ __pycache__
 
 .vscode/
 
+
+terraform.tfvars
+configurations/iaac/.terraform.lock.hcl
+**/.terraform/*
+*.tfstate
+*.tfstate.*
