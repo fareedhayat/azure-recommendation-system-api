@@ -43,12 +43,12 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
-    - task: AzureCLI@2
-      inputs:
-        azureSubscription: 'Visual Studio Enterprise Subscription – MPN(b0d41a48-8660-46c7-856d-1a9cf5f0ac07)'
-        scriptType: 'bash'
-        scriptLocation: 'inlineScript'
-        inlineScript: 'az acr login --name $(containerRegistry)'
+    # - task: AzureCLI@2
+    #   inputs:
+    #     azureSubscription: 'Visual Studio Enterprise Subscription – MPN(b0d41a48-8660-46c7-856d-1a9cf5f0ac07)'
+    #     scriptType: 'bash'
+    #     scriptLocation: 'inlineScript'
+    #     inlineScript: 'az acr login --name $(containerRegistry)'
     - task: AzureCLI@2
       inputs:
         azureSubscription: 'Visual Studio Enterprise Subscription – MPN(b0d41a48-8660-46c7-856d-1a9cf5f0ac07)'
