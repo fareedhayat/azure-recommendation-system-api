@@ -68,7 +68,6 @@ stages:
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: |
-          az acr show --name owwllfastapicr --query loginServer
           az acr login --name $(containerRegistry)
-          az container create --resource-group owwll-recommendation-fastapi-ci-cd_dev --name $(containerInstanceName) --image $(containerRegistry)/$(imageRepository):$(tag) --dns-name-label owwll-ap-instance --ports 80
+          az container create --resource-group owwll-recommendation-fastapi-ci-cd_dev --name $(containerInstanceName) --image $(containerRegistry)/$(imageRepository):$(tag) --cpu 1 --memory 1 --registry-login-server $(containerRegistry) --registry-username owwllFastApiCR  --registry-password qpA3uft5fS6XwMr3yXipgVhZZ63F/tQEziLPGIGJq0+ACRBI/jvl --ip-address Public --dns-name-label owwll-ap-instance --ports 80
     
