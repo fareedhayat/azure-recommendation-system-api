@@ -23,6 +23,11 @@ stages:
     steps:
     - task: TerraformCLI@2
       inputs:
+        command: 'init'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/configurations/iaac'
+        allowTelemetryCollection: true
+    - task: TerraformCLI@2
+      inputs:
         command: 'apply'
         workingDirectory: '$(System.DefaultWorkingDirectory)/configurations/iaac'
         allowTelemetryCollection: true
