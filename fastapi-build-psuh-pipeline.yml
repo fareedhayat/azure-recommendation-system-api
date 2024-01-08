@@ -5,8 +5,6 @@ resources:
 - repo: self
 
 variables:
-  # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: 'a94a92d8-548d-47d2-9a89-0288d51c1ce3'
   imageRepository: 'fareedhayatazurerecommendationsystemapi'
   containerRegistry: 'owwllfastapicr.azurecr.io'
   containerInstanceName: 'owwllfastapi-ci-cicd'
@@ -17,23 +15,23 @@ variables:
   vmImageName: 'ubuntu-latest'
 
 stages:
-# - stage: Build
-#   displayName: Build and push stage
-#   jobs: 
-#   - job: Build
-#     displayName: Build
-#     pool:
-#       vmImage: $(vmImageName)
-#     steps:
-#     - task: Docker@2
-#       displayName: Build and push an image to container registry
-#       inputs:
-#         command: buildAndPush
-#         repository: $(imageRepository)
-#         dockerfile: $(dockerfilePath)
-#         containerRegistry: $(dockerRegistryServiceConnection)
-#         tags: |
-#           $(tag)
+- stage: Build
+  displayName: Build and push stage
+  jobs: 
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: Docker@2
+      displayName: Build and push an image to container registry
+      inputs:
+        command: buildAndPush
+        repository: $(imageRepository)
+        dockerfile: $(dockerfilePath)
+        containerRegistry: $(dockerRegistryServiceConnection)
+        tags: |
+          $(tag)
 
 - stage: Deploy
   displayName: Deploy to Azure Container Instances
@@ -69,5 +67,5 @@ stages:
         scriptLocation: 'inlineScript'
         inlineScript: |
           az acr login --name $(containerRegistry)
-          az container create --resource-group owwll-recommendation-fastapi-ci-cd_dev --name $(containerInstanceName) --image $(containerRegistry)/$(imageRepository):28 --dns-name-label owwll-ap-instance --ports 80
+          az container create --resource-group owwll-recommendation-fastapi-ci-cd_dev --name $(containerInstanceName) --image $(containerRegistry)/$(imageRepository):$(tag) --dns-name-label owwll-ap-instance --ports 80
     
