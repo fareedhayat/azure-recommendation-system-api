@@ -69,5 +69,5 @@ stages:
         scriptLocation: 'inlineScript'
         inlineScript: |
           az acr login --name $(containerRegistry)
-          az container create --resource-group owwll-recommendation-fastapi-ci-cd_dev --name $(containerInstanceName) --image $(containerRegistry)/$(imageRepository):$(tag) --dns-name-label owwll-ap-instance --ports 80
+          az container create --resource-group owwll-recommendation-fastapi-ci-cd_dev --name $(containerInstanceName) --image $(containerRegistry)/$(imageRepository):28 --dns-name-label owwll-ap-instance --ports 80
     
