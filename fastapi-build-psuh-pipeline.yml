@@ -8,7 +8,7 @@ variables:
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: 'a94a92d8-548d-47d2-9a89-0288d51c1ce3'
   imageRepository: 'fareedhayatazurerecommendationsystemapi'
-  containerRegistry: 'owwllfastapicr.azurecr.io'
+  containerRegistry: 'owwllfastapicr'
   containerInstanceName: 'owwllfastapi-ci'
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
   tag: '$(Build.BuildId)'
