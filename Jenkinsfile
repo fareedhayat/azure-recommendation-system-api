@@ -19,8 +19,10 @@ pipeline {
 		}
 		stage ('Upload') {
 			steps {
-				withDockerRegistry(credentialsId:${registry_credentials} , toolName: 'myDocker', url: ${registry_URL}) {
-                    docker_image.push()
+				withDockerRegistry(credentialsId:"${registry_credentials}" , url: "${registry_URL}") {
+                    script {
+                        docker_image.push()
+                    }
             }
 			}
 		}
