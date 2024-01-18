@@ -4,6 +4,8 @@ pipeline {
     environment {
         dockerHome = tool 'myDocker'
         PATH = "$dockerHome/bin:$PATH"
+        registry_credentials = 'ACR_FASTAPI'
+        registry_URL = 'owwllfastapicr.azurecr.io'
     }
 
 	stages {
@@ -17,7 +19,9 @@ pipeline {
 		}
 		stage ('Upload') {
 			steps {
-				echo "Uploading Docker Image to Azure Container Registry"
+				withDockerRegistry(credentialsId:${registry_credentials} , toolName: 'myDocker', url: ${registry_URL}) {
+                    docker_image.push()
+            }
 			}
 		}
 	}
