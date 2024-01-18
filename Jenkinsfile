@@ -6,8 +6,8 @@ pipeline {
         PATH = "$dockerHome/bin:$PATH"
         registry_credentials = 'ACR_FASTAPI'
         registry_URL = 'https://owwllfastapicr.azurecr.io'
-        registry_name = owwllfastapicr
-        image_name = recommendation-sytem-api
+        registry_name = 'owwllfastapicr'
+        image_name = 'recommendation-sytem-api'
     }
 
 	stages {
