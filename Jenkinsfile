@@ -13,12 +13,19 @@ pipeline {
 	stages {
 		stage ('Build') {
 			steps {
-                sh "az --version"
+                withCredentials([azureServicePrincipal('34a5f951-6d0f-4665-ae04-6cc649cdefd9')]) {
+                    script {
+                        // Set the PATH to include the Azure CLI directory
+                        env.PATH = "/path/to/azure-cli:${env.PATH}"
+
+                        // Now, az should be available in the PATH
+                        sh 'az --version'
 				echo "Building Docker Image"
                 script {
                     docker_image = docker.build("${registry_name}/${image_name}:${env.BUILD_TAG}")
                 }
 			}
+            }
 		}
 		stage ('Upload') {
 			steps {
