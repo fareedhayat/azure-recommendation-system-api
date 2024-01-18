@@ -23,6 +23,7 @@ pipeline {
 			steps {
 				withDockerRegistry(credentialsId:"${registry_credentials}" , url: "${registry_URL}") {
                     script {
+                        sh "az acr login --name ${registry_name}"
                         docker_image.push()
                     }
             }
