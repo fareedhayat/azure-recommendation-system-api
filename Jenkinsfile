@@ -13,6 +13,7 @@ pipeline {
 	stages {
 		stage ('Build') {
 			steps {
+                sh "az --version"
 				echo "Building Docker Image"
                 script {
                     docker_image = docker.build("${registry_name}/${image_name}:${env.BUILD_TAG}")
