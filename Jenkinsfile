@@ -8,30 +8,26 @@ pipeline {
         registry_URL = 'https://owwllfastapicr.azurecr.io'
         registry_name = 'owwllfastapicr'
         image_name = 'recommendation-sytem-api'
+        docker_image = ''
     }
 
 	stages {
 		stage ('Build') {
 			steps {
-                withCredentials([azureServicePrincipal('34a5f951-6d0f-4665-ae04-6cc649cdefd9')]) {
-                    script {
-                        // Now, az should be available in the PATH
-                        sh "az --version"
-                    }}
 				echo "Building Docker Image"
                 script {
                     docker_image = docker.build("${registry_name}/${image_name}:${env.BUILD_TAG}")
                 }
 		    }
-            }
+        }
+
 		stage ('Upload') {
-			steps {
-				withDockerRegistry(credentialsId:"${registry_credentials}" , url: "${registry_URL}") {
-                    script {
-                        sh "az acr login --name ${registry_name}"
+			steps {	
+                script {
+                    withDockerRegistry(credentialsId:"${registry_credentials}" , url: "${registry_URL}") {
                         docker_image.push()
                     }
-            }
+                }
 			}
 		}
 }
