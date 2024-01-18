@@ -24,11 +24,8 @@ pipeline {
 		stage ('Upload') {
 			steps {	
                 script {
-                    withCredentials([azureServicePrincipal('34a5f951-6d0f-4665-ae04-6cc649cdefd9')]) {
-                        sh 'az --version'
-                    }
-                    withDockerRegistry(credentialsId:"${registry_credentials}" , url: "${registry_URL}") {
-                        docker_image.push()
+                    docker.withRegistry( "${registry_URL}", registry_credentials ) {
+                    dockerImage.push()
                     }
                 }
 			}
