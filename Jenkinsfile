@@ -20,13 +20,13 @@ pipeline {
 
                         // Now, az should be available in the PATH
                         sh 'az --version'
+                    }}
 				echo "Building Docker Image"
                 script {
                     docker_image = docker.build("${registry_name}/${image_name}:${env.BUILD_TAG}")
                 }
-			}
+		    }
             }
-		}
 		stage ('Upload') {
 			steps {
 				withDockerRegistry(credentialsId:"${registry_credentials}" , url: "${registry_URL}") {
@@ -37,5 +37,5 @@ pipeline {
             }
 			}
 		}
-	}
+}
 }
