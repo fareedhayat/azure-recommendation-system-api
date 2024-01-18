@@ -5,7 +5,9 @@ pipeline {
         dockerHome = tool 'myDocker'
         PATH = "$dockerHome/bin:$PATH"
         registry_credentials = 'ACR_FASTAPI'
-        registry_URL = 'owwllfastapicr.azurecr.io'
+        registry_URL = 'https://owwllfastapicr.azurecr.io'
+        registry_name = owwllfastapicr
+        image_name = recommendation-sytem-api
     }
 
 	stages {
@@ -13,7 +15,7 @@ pipeline {
 			steps {
 				echo "Building Docker Image"
                 script {
-                    docker_image = docker.build("fareedhayat/recommendation-sytem-api:${env.BUILD_TAG}")
+                    docker_image = docker.build("${registry_name}/${image_name}:${env.BUILD_TAG}")
                 }
 			}
 		}
