@@ -46,6 +46,12 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: 'Visual Studio Enterprise Subscription – MPN(2)(b0d41a48-8660-46c7-856d-1a9cf5f0ac07)'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: 'az acr login -name owwllfastapicr'
     - task: Docker@2
       displayName: Build and push an image to container registry
       inputs:
