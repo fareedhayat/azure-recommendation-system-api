@@ -32,29 +32,6 @@ pipeline {
                 }
 			}
 		}
-
-        stage ('Deploy') {
-            steps {
-                script {
-                        azureCLI commands: [[
-                            exportVariablesString: 'containerInstanceName, registry_name, image_repository',
-                            script: '''
-                                az container create --resource-group owwll-recommendation-fastapi-ci-cd_dev \
-                                    --name ${containerInstanceName} \
-                                    --image ${registry_name}/${image_repository}:${env.BUILD_TAG} \
-                                    --cpu 1 --memory 1 \
-                                    --registry-login-server ${registry_name} \
-                                    --registry-username owwllFastApiCR \
-                                    --registry-password L9hhyrtOBwgoB8J0Jw62h8aWTZUsCWvelpAPeY1Oi++ACRB7JmIC \
-                                    --ip-address Public \
-                                    --dns-name-label owwll-ap-instance \
-                                    --ports 80
-                            '''
-                        ]]
-                } 
-                    
-            }
-        }
     }
 }
 
