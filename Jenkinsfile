@@ -36,7 +36,6 @@ pipeline {
         stage ('Deploy') {
             steps {
                 script {
-                    try {
                         azureCLI commands: [[
                             exportVariablesString: 'containerInstanceName, registry_name, image_repository',
                             script: '''
@@ -52,12 +51,10 @@ pipeline {
                                     --ports 80
                             '''
                         ]]
-                    } catch (Exception e) {
-                        currentBuild.result = 'FAILURE'
-                        error("Deployment failed: ${e.message}")
-                    }
-                }
+                } 
+                    
             }
         }
+    }
 }
-}
+
